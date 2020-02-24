@@ -8,6 +8,7 @@ package rentaautos.fx;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,8 +16,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,8 +42,29 @@ public class FormAutosController implements Initializable {
    @FXML
    private TableColumn<Autos, Integer> columnaId;
    
-      @FXML
+    @FXML
    private TableColumn<Autos, String> columnaMarcas;
+    
+    @FXML
+   private TableColumn<Autos, String> colCategoria;
+    
+    @FXML
+   private TableColumn<Autos, Double> colPrecio;
+    
+    @FXML
+   private TableColumn<Autos, Integer> colExistencia;
+    
+    @FXML
+   private TableColumn<Autos, Boolean> colActivo;
+      
+    @FXML
+   private TableColumn colEditar;
+                 
+    @FXML
+   private TableColumn colEliminar;  
+      
+     @FXML
+    private TextField txtBuscar;
       
       ObservableList<Autos> data;
       
@@ -53,6 +81,16 @@ public class FormAutosController implements Initializable {
         
         columnaId.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnaMarcas.setCellValueFactory(new PropertyValueFactory("Marcas"));
+        colCategoria.setCellValueFactory(c-> new SimpleStringProperty(c.getValue()
+                .getAutosCategoria().getMarcas()));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("Precio"));
+        colExistencia.setCellValueFactory(new PropertyValueFactory<>("Existencia"));
+        colActivo.setCellValueFactory(new PropertyValueFactory<>("Activo"));
+
+
+        definirColumnaEditar();
+        definirColumnaEliminar();
+        
         
         cargarDatos();
        
@@ -64,9 +102,17 @@ public class FormAutosController implements Initializable {
       abrirVentanaModal(NuevoAuto, "Nuevo Auto");
      }
      
-     public void guardar(Autos auto){
-          servicio.guardar(auto);
-          cargarDatos();
+     public String guardar(Autos auto){
+          String resultado=servicio.guardar(auto);
+          if(resultado.equals(""))
+          {
+           cargarDatos();   
+          }
+          return resultado;
+     }
+     public void buscar()
+     {
+       cargarDatos();
      }
 
     private void abrirVentanaModal(Autos auto,String titulo) throws IOException {
@@ -87,13 +133,86 @@ public class FormAutosController implements Initializable {
     }
 
     private void cargarDatos() {
-      
-        data = FXCollections.observableArrayList(servicio.ObtenerAutos());
-        
+      if(txtBuscar.getText()==null||txtBuscar.getText().equals("")){
+       data = FXCollections.observableArrayList(servicio.ObtenerAutos());   
+      }else{
+       data = FXCollections.observableArrayList(servicio.ObtenerAutos(txtBuscar.getText()));   
+      }
        tableView.setItems(data);
        tableView.refresh();
        
     }
 
+    private void definirColumnaEditar() {
+        colEditar.setCellFactory(param-> new TableCell<String , String>(){
+            final Button btn=new Button("Editar");
+            
+            @Override
+            public void updateItem(String item,boolean empty)
+            {
+              super.updateItem(item, empty);
+              if(empty)
+              {
+                  setGraphic(null);
+                  setText(null);
+              }else{
+                  btn.setOnAction(event->{
+                  Autos auto=(Autos) getTableRow().getItem();
+                      try {
+                          abrirVentanaModal(auto,"Editar Autos");
+                      } catch (Exception e) {
+                      }
+                  
+             
+                  });
+                  setGraphic(btn);
+                  setText(null);
+              }
+            }
+            
+            
+        });
+    }
+
+    private void definirColumnaEliminar() {
+      colEliminar.setCellFactory(param-> new TableCell<String , String>(){
+            final Button btn=new Button("Eliminar");
+            
+            @Override
+            public void updateItem(String item,boolean empty)
+            {
+              super.updateItem(item, empty);
+              if(empty)
+              {
+                  setGraphic(null);
+                  setText(null);
+              }else{
+                  btn.setOnAction(event->{
+                  Autos auto=(Autos) getTableRow().getItem();
+                 quitar(auto);
+                  
+             
+                  });
+                  setGraphic(btn);
+                  setText(null);
+              }
+            }
+         });  
+        
+    }
+ private void quitar(Autos auto) {
+             Alert alert=new Alert(AlertType.CONFIRMATION,
+             "¿Esta seguro que desea eliminar el vehiculo"+auto.getMarcas()+"?",
+               ButtonType.YES,ButtonType.NO);
+             
+             alert.showAndWait();
+             if(alert.getResult()==ButtonType.YES){
+               servicio.eliminar(auto);
+               cargarDatos();
+             }
+             
+            
+              
+          }
    
 }
