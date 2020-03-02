@@ -37,8 +37,5 @@ public class AutosCategoria {
         this.Marcas = Marcas;
     }
     
-    @Override  
-    public String toString(){
-        return Marcas;
-    }
+  
 }

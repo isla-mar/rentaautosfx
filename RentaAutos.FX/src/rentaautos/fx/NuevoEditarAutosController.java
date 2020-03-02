@@ -5,6 +5,10 @@
  */
 package rentaautos.fx;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -13,11 +17,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import rentaautos.bl.Autos;
 import rentaautos.bl.AutosCategoria;
@@ -32,25 +33,25 @@ public class NuevoEditarAutosController implements Initializable {
    
     
     @ FXML
-    Button btnCancelar;
+    JFXButton btnCancelar;
     
    @ FXML
-    TextField txtId;
+    JFXTextField txtId;
     
    @ FXML
-    TextField txtMarcas;
+    JFXTextField txtMarcas;
    
    @ FXML
-    ComboBox cmbCategoria;
+    JFXComboBox cmbCategoria;
    
     @ FXML
-    TextField txtPrecio;
+    JFXTextField txtPrecio;
     
     @ FXML
-    TextField txtExistencia;
+    JFXTextField txtExistencia;
     
     @ FXML
-    CheckBox chActivo;
+    JFXCheckBox chActivo;
     
      private FormAutosController controller;
      private Autos auto;
@@ -68,7 +69,21 @@ public class NuevoEditarAutosController implements Initializable {
       
       txtId.textProperty().bindBidirectional(auto.idProperty(), new NumberStringConverter());
       txtMarcas.textProperty().bindBidirectional(auto.MarcasProperty());
-      cmbCategoria.valueProperty().bindBidirectional(auto.AutosCategoriaProperty());
+      
+      cmbCategoria.setConverter(new StringConverter<AutosCategoria>(){
+             @Override
+             public String toString(AutosCategoria categoria) {
+                 return categoria ==null ? "" : categoria.getMarcas();
+             }
+
+             @Override
+             public AutosCategoria fromString(String string) {
+               return new AutosCategoria(string);  
+             }
+      
+      
+      });
+      
       txtPrecio.textProperty().bindBidirectional(auto.precioProperty(), new NumberStringConverter());
       txtExistencia.textProperty().bindBidirectional(auto.existenciaProperty(), new NumberStringConverter());
       chActivo.selectedProperty().bindBidirectional(auto.activoProperty());

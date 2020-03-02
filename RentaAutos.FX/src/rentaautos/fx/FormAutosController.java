@@ -5,6 +5,8 @@
  */
 package rentaautos.fx;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -64,7 +66,7 @@ public class FormAutosController implements Initializable {
    private TableColumn colEliminar;  
       
      @FXML
-    private TextField txtBuscar;
+    private JFXTextField txtBuscar;
       
       ObservableList<Autos> data;
       
@@ -145,7 +147,7 @@ public class FormAutosController implements Initializable {
 
     private void definirColumnaEditar() {
         colEditar.setCellFactory(param-> new TableCell<String , String>(){
-            final Button btn=new Button("Editar");
+            final JFXButton btn=new JFXButton("Editar");
             
             @Override
             public void updateItem(String item,boolean empty)
@@ -156,7 +158,11 @@ public class FormAutosController implements Initializable {
                   setGraphic(null);
                   setText(null);
               }else{
+                  
+                  btn.getStyleClass().add("jfx-button-info-outline");
                   btn.setOnAction(event->{
+                      
+                  tableView.getSelectionModel().select(getTableRow().getItem());
                   Autos auto=(Autos) getTableRow().getItem();
                       try {
                           abrirVentanaModal(auto,"Editar Autos");
@@ -176,7 +182,7 @@ public class FormAutosController implements Initializable {
 
     private void definirColumnaEliminar() {
       colEliminar.setCellFactory(param-> new TableCell<String , String>(){
-            final Button btn=new Button("Eliminar");
+            final JFXButton btn=new JFXButton("Eliminar");
             
             @Override
             public void updateItem(String item,boolean empty)
@@ -187,7 +193,10 @@ public class FormAutosController implements Initializable {
                   setGraphic(null);
                   setText(null);
               }else{
+                  btn.getStyleClass().add("jfx-button-danger-outline");
                   btn.setOnAction(event->{
+                      
+                  tableView.getSelectionModel().select(getTableRow().getItem());
                   Autos auto=(Autos) getTableRow().getItem();
                  quitar(auto);
                   
