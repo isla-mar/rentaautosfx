@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rentaautos.fx.FormAutosController">
+<VBox style="-fx-background-color: withe;" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rentaautos.fx.FormAutosController">
    <children>
       <Label style="-fx-font-size: 30; -fx-font-weight: bold;" text="AUTOMOVILES" textFill="#07106b" />
       <VBox prefHeight="200.0" prefWidth="100.0">
@@ -35,7 +35,7 @@
         <columns>
           <TableColumn fx:id="columnaId" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: CENTER RIGTH;" text="Id" />
           <TableColumn fx:id="columnaMarcas" prefWidth="70.0" style="-fx-alignment: CENTER LEFT;" text="Marcas" />
-            <TableColumn fx:id="colCategoria" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" style="-fx-alignment: CENTER LEFT;" text="Categoria" />
+            <TableColumn fx:id="colCategoria" prefWidth="200.0" style="-fx-alignment: CENTER LEFT;" text="Categoria" />
             <TableColumn fx:id="colPrecio" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: CENTER RIGTH;" text="Precio" />
             <TableColumn fx:id="colExistencia" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: CENTER RIGTH;" text="Existencia" />
             <TableColumn fx:id="colActivo" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" style="-fx-alignment: CENTER;" text="Activo" />

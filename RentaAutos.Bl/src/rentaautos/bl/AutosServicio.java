@@ -5,7 +5,14 @@
  */
 package rentaautos.bl;
 
+
 import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -13,122 +20,107 @@ import java.util.ArrayList;
  */
 public class AutosServicio {
     
-    private final ArrayList<Autos> catalagodeAutos;
-     
-    public AutosServicio(){
-        catalagodeAutos = new ArrayList<>();
-        crearDatosPrueba();
-    }
+    
      
     public ArrayList<Autos>ObtenerAutos(){
-        return catalagodeAutos;
+       Session session = HibernateUtil.getSessionFactory().openSession();
+     
+     Transaction tx = session.beginTransaction();
+     
+     Criteria query = session.createCriteria(Autos.class);
+     List<Autos> resultado = query.list();
+     tx.commit();
+     session.close();
+     return new ArrayList<>(resultado);
     }
     
     
     public ArrayList<Autos>ObtenerAutos(String buscar){
         
-        if(buscar==null||buscar.equals(""))
-        {
-          return catalagodeAutos;  
-        }
-        String bminusc=buscar.toLowerCase();
-        ArrayList<Autos>busqueda= new ArrayList<>();
-        
-        
-                catalagodeAutos.forEach(auto->{
-                if(auto.getMarcas().toLowerCase().contains(buscar)==true){
-                    
-                    busqueda.add(auto);
-                }
-             });
-                
-        return busqueda;
+      Session session = HibernateUtil.getSessionFactory().openSession();
+     
+     Transaction tx = session.beginTransaction();
+     
+     Criteria query = session.createCriteria(Autos.class);
+     query.add(Restrictions.like("Marcas",buscar,MatchMode.ANYWHERE ));
+     List<Autos> resultado = query.list();
+     tx.commit();
+     session.close();
+     return new ArrayList<>(resultado);
     }
     
-    public String guardar(Autos auto){
-        String resultado=validarAutos(auto);
+    public String guardar(Autos autos){
+        String resultado=validarAutos(autos);
+        if(resultado.equals("")){
+             Session session = HibernateUtil.getSessionFactory().openSession();
+    Transaction tx = session.beginTransaction();
         
-        if(resultado.equals(""))
-        {
-         if(auto.getId().equals(0)){
-             Integer id = obtenerSguiente();
-             
-             auto.setId(id);
-             
-             catalagodeAutos.add(auto);
-         }else {
-            catalagodeAutos.forEach(autoExistente->{
-                if(autoExistente.getId().equals(auto.getId()))
-                {
-                    autoExistente.setMarcas(auto.getMarcas());
-                    autoExistente.setAutosCategoria(auto.getAutosCategoria());
-                    autoExistente.setPrecio(auto.getPrecio());
-                    autoExistente.setExistencia(auto.getExistencia());
-                    autoExistente.setActivo(auto.getActivo());
-                }
-            });
-         } 
-         return "";
-        }
-        return resultado;
-        
-         
-         
-    }
-    
-    public void eliminar(Autos auto)
-    {
-       catalagodeAutos.remove(auto);
-    }
+        try{
+            session.saveOrUpdate(autos);
             
-    private void crearDatosPrueba() {
-        AutosCategoria Acategoria1= new AutosCategoria("Automoviles");
-        Acategoria1.setId(1);
-        
-        
-        
-        Autos auto1 = new Autos();
-        auto1.setId(1);
-        auto1.setMarcas("Toyota");
-        auto1.setAutosCategoria(Acategoria1);
-        auto1.setPrecio(200000.00);
-        auto1.setExistencia(50);
-       
-       Autos auto2 = new Autos();
-       auto2.setId(2);
-       auto2.setMarcas("Honda");
-       auto2.setAutosCategoria(Acategoria1);
-       auto2.setPrecio(250000.00);
-       auto2.setExistencia(40);
-       
-       catalagodeAutos.add(auto1);
-       catalagodeAutos.add(auto2);
+            tx.commit();
+         
+         }catch (Exception e){
+            tx.rollback();
+         return e.getMessage();
+         }finally{
+                   session.close();
+                   }
+            return "";
     }
+        return resultado;
+    }
+    
+    
+    public void eliminar(Autos autos)
+    {
+     Session session = HibernateUtil.getSessionFactory().openSession();
+    Transaction tx = session.beginTransaction();
+         
+        try{
+            session.delete(autos);
+            
+            tx.commit();
+         
+         }catch (Exception e){
+            tx.rollback();
+            
+            System.out.println(e.getMessage());
+         }finally{
+                   session.close();
+                   }
+           
+    }
+     
+    public Autos clonar(Autos autos){
+        Autos autoClonado = new Autos();
+        
+        autoClonado.setId(autos.getId());
+        autoClonado.setMarcas(autos.getMarcas());
+        autoClonado.setAutosCategoria(autos.getAutosCategoria());
+        autoClonado.setPrecio(autos.getPrecio());
+        autoClonado.setExistencia(autos.getExistencia());
+        autoClonado.setActivo(autos.getActivo());
 
-    private Integer obtenerSguiente() {
-       Integer maxId = 1;
-       for(Autos auto: catalagodeAutos){
-           if(auto.getId() >= maxId){
-               maxId = auto.getId()+1;
-           }
-       }
+
+
+        return autoClonado;
+        
+    }    
     
 
-           return maxId;
-    
-    }
 
-    private String validarAutos(Autos auto) {
-        if(auto.getMarcas()==null||auto.getMarcas().equals("")){
+    private String validarAutos(Autos autos) {
+        if(autos.getMarcas()==null||autos.getMarcas().equals("")){
             return "ingrese la marca";
         }
-        if(auto.getAutosCategoria()==null){
+        if(autos.getAutosCategoria()==null){
             return "seleccione una categoria";
         }
-        if(auto.getPrecio()<0){
+        if(autos.getPrecio()<0){
             return "ingrese el Precio mayo o igua a cero plox";
         }
-        if(auto.getExistencia()<0){
+        if(autos.getExistencia()<0){
             return "la existencia deber ser mayo a cero";
         }
 

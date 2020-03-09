@@ -10,6 +10,8 @@ import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -163,13 +165,15 @@ public class FormAutosController implements Initializable {
                   btn.setOnAction(event->{
                       
                   tableView.getSelectionModel().select(getTableRow().getItem());
-                  Autos auto=(Autos) getTableRow().getItem();
-                      try {
-                          abrirVentanaModal(auto,"Editar Autos");
-                      } catch (Exception e) {
-                      }
-                  
-             
+                    Autos autoExistente=(Autos) getTableRow().getItem();
+                    Autos autos = servicio.clonar(autoExistente);
+                           try{
+                     abrirVentanaModal(autos, "Editar Autos");
+                     
+                 }catch(IOException ex){
+                    Logger.getLogger(FormAutosController.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+                
                   });
                   setGraphic(btn);
                   setText(null);
@@ -197,8 +201,10 @@ public class FormAutosController implements Initializable {
                   btn.setOnAction(event->{
                       
                   tableView.getSelectionModel().select(getTableRow().getItem());
-                  Autos auto=(Autos) getTableRow().getItem();
-                 quitar(auto);
+                  Autos autos=(Autos) getTableRow().getItem();
+                
+                  
+                 quitar(autos);
                   
              
                   });

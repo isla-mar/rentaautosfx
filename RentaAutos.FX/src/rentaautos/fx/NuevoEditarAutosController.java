@@ -56,6 +56,7 @@ public class NuevoEditarAutosController implements Initializable {
      private FormAutosController controller;
      private Autos auto;
      private CategoriasAutoServicio categoriasAutosServicio;
+     private ObservableList<AutosCategoria>data;
      
      
      public void setController(FormAutosController controller){
@@ -69,6 +70,7 @@ public class NuevoEditarAutosController implements Initializable {
       
       txtId.textProperty().bindBidirectional(auto.idProperty(), new NumberStringConverter());
       txtMarcas.textProperty().bindBidirectional(auto.MarcasProperty());
+      cmbCategoria.valueProperty().bindBidirectional(auto.AutosCategoriaProperty());
       
       cmbCategoria.setConverter(new StringConverter<AutosCategoria>(){
              @Override
@@ -78,7 +80,16 @@ public class NuevoEditarAutosController implements Initializable {
 
              @Override
              public AutosCategoria fromString(String string) {
-               return new AutosCategoria(string);  
+                 
+                 if(data == null){
+                     return null;
+                 }
+                 for(AutosCategoria categoria:data){
+                     if(categoria.getMarcas().equals(string)){
+                         return categoria;
+                     }
+                 }
+               return null;  
              }
       
       
@@ -100,7 +111,7 @@ public class NuevoEditarAutosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     categoriasAutosServicio=new CategoriasAutoServicio();
     
-    ObservableList<AutosCategoria>data= FXCollections.observableArrayList(categoriasAutosServicio.obtenerCategorias());
+     data= FXCollections.observableArrayList(categoriasAutosServicio.obtenerCategorias());
     
       cmbCategoria.setItems(data);
     }  

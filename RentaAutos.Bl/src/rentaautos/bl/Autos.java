@@ -10,11 +10,20 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author dell
  */
+@Entity
+@Table(name="Autos")
 public class Autos {
     
     private SimpleIntegerProperty id;
@@ -33,7 +42,8 @@ public class Autos {
         existencia=new SimpleIntegerProperty();
         activo=new SimpleBooleanProperty(true);
     }
-
+      @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Integer getId() {
         return id.get();
     }
@@ -98,7 +108,9 @@ public class Autos {
     public SimpleBooleanProperty activoProperty(){
         return activo;
     }
-    //////////////////////////////////////////////////
+    
+    @ManyToOne
+    @JoinColumn(name="AutosCategoriaId", nullable=false)
     public AutosCategoria getAutosCategoria() {
         return (AutosCategoria) AutosCategoria.get();
     }

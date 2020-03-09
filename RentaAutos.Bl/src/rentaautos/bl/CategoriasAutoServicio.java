@@ -6,33 +6,30 @@
 package rentaautos.bl;
 
 import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
  * @author mauricio.bonilla
  */
 public class CategoriasAutoServicio {
-    private final ArrayList<AutosCategoria> listadeCategoria;
-
-    public CategoriasAutoServicio() {
-     listadeCategoria= new ArrayList<>();
-     
-     crearDatosdePrueba();
-    }
+   
     public ArrayList<AutosCategoria> obtenerCategorias(){
-    return listadeCategoria;
+     Session session = HibernateUtil.getSessionFactory().openSession();
+     
+     Transaction tx = session.beginTransaction();
+     
+     Criteria query = session.createCriteria(AutosCategoria.class);
+     List<AutosCategoria> resultado = query.list();
+     tx.commit();
+     session.close();
+     return new ArrayList<>(resultado);
     }
 
-        private void crearDatosdePrueba() {
-        AutosCategoria ACategoria1=new AutosCategoria("Automoviles");
-        ACategoria1.setId(1);
-        
-        AutosCategoria ACategoria2=new AutosCategoria("Motos");
-        ACategoria2.setId(2);
-        
-        listadeCategoria.add(ACategoria1);
-        listadeCategoria.add(ACategoria2);
-    }
+       
     
     
 }
