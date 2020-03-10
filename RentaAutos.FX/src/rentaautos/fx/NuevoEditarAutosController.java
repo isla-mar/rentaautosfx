@@ -122,7 +122,7 @@ public class NuevoEditarAutosController implements Initializable {
              cerrar();
         }else{
             Alert alert=new Alert(AlertType.ERROR);
-            alert.setTitle("Producto");
+            alert.setTitle("Automovil");
             alert.setHeaderText("Errores de validacion");
             alert.setContentText(resultado);
             alert.showAndWait();

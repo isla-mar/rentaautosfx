@@ -19,14 +19,14 @@ import javax.persistence.Table;
  * @author mauricio.bonilla
  */
 @Entity
-@Table(name="AutosCategoria")
+@Table(name="AutosCategoria") ///////////////////////////////////////////
 public class AutosCategoria {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     private String Marcas;
     
-     @OneToMany(mappedBy="AutosCategoria")
+     @OneToMany(mappedBy="autosCategoria")
      private Set<Autos> autos;
 
     public Set<Autos> getAutos() {

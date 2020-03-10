@@ -22,7 +22,7 @@ import javax.persistence.Table;
  *
  * @author dell
  */
-@Entity
+@Entity ////////////////////////////////////////////////////
 @Table(name="Autos")
 public class Autos {
     
@@ -42,7 +42,7 @@ public class Autos {
         existencia=new SimpleIntegerProperty();
         activo=new SimpleBooleanProperty(true);
     }
-      @Id
+    @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Integer getId() {
         return id.get();
@@ -69,7 +69,7 @@ public class Autos {
     public SimpleStringProperty MarcasProperty(){
         return Marcas;
     }
-    //////////////////////////////////////////////////////////
+    
     public Double getPrecio() {
         return precio.get();
     }
@@ -82,7 +82,7 @@ public class Autos {
     public SimpleDoubleProperty precioProperty(){
         return precio;
     }
-    /////////////////////////////////////////////////
+    
     public Integer getExistencia() {
         return existencia.get();
     }
@@ -95,7 +95,7 @@ public class Autos {
     public SimpleIntegerProperty existenciaProperty(){
         return existencia;
     }
-   //////////////////////////////////////////////////////
+  
     public Boolean getActivo() {
         return activo.get();
     }
@@ -109,7 +109,7 @@ public class Autos {
         return activo;
     }
     
-    @ManyToOne
+    @ManyToOne ///////////////////////////////////////
     @JoinColumn(name="AutosCategoriaId", nullable=false)
     public AutosCategoria getAutosCategoria() {
         return (AutosCategoria) AutosCategoria.get();

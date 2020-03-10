@@ -23,7 +23,8 @@ public class AutosServicio {
     
      
     public ArrayList<Autos>ObtenerAutos(){
-       Session session = HibernateUtil.getSessionFactory().openSession();
+       ///////////////////////////////////////////////////////////////////// 
+     Session session = HibernateUtil.getSessionFactory().openSession();
      
      Transaction tx = session.beginTransaction();
      
@@ -36,7 +37,7 @@ public class AutosServicio {
     
     
     public ArrayList<Autos>ObtenerAutos(String buscar){
-        
+       /////////////////////////////////////////////////////////////// 
       Session session = HibernateUtil.getSessionFactory().openSession();
      
      Transaction tx = session.beginTransaction();
@@ -50,6 +51,7 @@ public class AutosServicio {
     }
     
     public String guardar(Autos autos){
+        //////////////////////////////////////////////////////////
         String resultado=validarAutos(autos);
         if(resultado.equals("")){
              Session session = HibernateUtil.getSessionFactory().openSession();
@@ -74,6 +76,7 @@ public class AutosServicio {
     
     public void eliminar(Autos autos)
     {
+        //////////////////////////////////////////////////////////////
      Session session = HibernateUtil.getSessionFactory().openSession();
     Transaction tx = session.beginTransaction();
          

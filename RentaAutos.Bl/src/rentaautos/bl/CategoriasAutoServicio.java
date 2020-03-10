@@ -18,6 +18,8 @@ import org.hibernate.Transaction;
 public class CategoriasAutoServicio {
    
     public ArrayList<AutosCategoria> obtenerCategorias(){
+        
+        /////////////////////////////////////////////////////////////////
      Session session = HibernateUtil.getSessionFactory().openSession();
      
      Transaction tx = session.beginTransaction();
