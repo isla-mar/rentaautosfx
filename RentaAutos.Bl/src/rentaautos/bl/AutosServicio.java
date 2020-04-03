@@ -22,17 +22,32 @@ public class AutosServicio {
     
     
      
-    public ArrayList<Autos>ObtenerAutos(){
+    public ArrayList<Autos>ObtenerAutosActivos(){
        ///////////////////////////////////////////////////////////////////// 
      Session session = HibernateUtil.getSessionFactory().openSession();
      
      Transaction tx = session.beginTransaction();
      
      Criteria query = session.createCriteria(Autos.class);
-     List<Autos> resultado = query.list();
+     query.add(Restrictions.eq("activo", true));
+     List<Autos> resultado= query.list();
+     
      tx.commit();
      session.close();
      return new ArrayList<>(resultado);
+    }
+      public ArrayList<Autos> obtenerAutos() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        Transaction tx = session.beginTransaction();
+        
+        Criteria query = session.createCriteria(Autos.class);
+        List<Autos> resultado = query.list();
+        
+        tx.commit();
+        session.close();
+ 
+        return new ArrayList<>(resultado);
     }
     
     
@@ -104,7 +119,7 @@ public class AutosServicio {
         autoClonado.setPrecio(autos.getPrecio());
         autoClonado.setExistencia(autos.getExistencia());
         autoClonado.setActivo(autos.getActivo());
-
+        autoClonado.setImagen(autos.getImagen());
 
 
         return autoClonado;
@@ -129,4 +144,6 @@ public class AutosServicio {
 
         return"";
     }
+
+
 }

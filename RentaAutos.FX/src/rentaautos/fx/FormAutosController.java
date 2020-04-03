@@ -29,6 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import rentaautos.bl.Autos;
@@ -65,7 +66,10 @@ public class FormAutosController implements Initializable {
    private TableColumn colEditar;
                  
     @FXML
-   private TableColumn colEliminar;  
+   private TableColumn colEliminar; 
+    
+     @FXML
+    private TableColumn colImagen;
       
      @FXML
     private JFXTextField txtBuscar;
@@ -94,6 +98,7 @@ public class FormAutosController implements Initializable {
 
         definirColumnaEditar();
         definirColumnaEliminar();
+        definirColumnaImagen();
         
         
         cargarDatos();
@@ -138,7 +143,7 @@ public class FormAutosController implements Initializable {
 
     private void cargarDatos() {
       if(txtBuscar.getText()==null||txtBuscar.getText().equals("")){
-       data = FXCollections.observableArrayList(servicio.ObtenerAutos());   
+       data = FXCollections.observableArrayList(servicio.obtenerAutos());   
       }else{
        data = FXCollections.observableArrayList(servicio.ObtenerAutos(txtBuscar.getText()));   
       }
@@ -215,19 +220,51 @@ public class FormAutosController implements Initializable {
          });  
         
     }
- private void quitar(Autos auto) {
+ private void quitar(Autos autos) {
              Alert alert=new Alert(AlertType.CONFIRMATION,
-             "¿Esta seguro que desea eliminar el vehiculo"+auto.getMarcas()+"?",
+             "¿Esta seguro que desea eliminar el vehiculo"+ autos.getMarcas()+"?",
                ButtonType.YES,ButtonType.NO);
              
              alert.showAndWait();
              if(alert.getResult()==ButtonType.YES){
-               servicio.eliminar(auto);
+               servicio.eliminar(autos);
                cargarDatos();
              }
              
             
               
           }
+
+    private void definirColumnaImagen() {
+        colImagen.setCellFactory(param-> new TableCell<String , String>(){
+            final ImageView img = new ImageView();
+            
+            @Override
+            public void updateItem(String item,boolean empty)
+            {
+              super.updateItem(item, empty);
+              if(empty)
+              {
+                  setGraphic(null);
+                  setText(null);
+              }else{
+                  Autos autos=(Autos) getTableRow().getItem();
+                  if (autos != null)
+                  {
+                       img.imageProperty().set(autos.getImageView());
+                       img.setFitWidth(100);
+                       img.setPreserveRatio(true);
+                    
+                       setGraphic(img);
+                       setText(null); 
+                  }
+                  
+              }
+            }
+         });  
+        
+    }
    
 }
+
+//Autos autos=(Autos) getTableRow().getItem();

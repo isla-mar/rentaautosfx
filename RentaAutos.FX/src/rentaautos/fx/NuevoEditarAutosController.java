@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -17,6 +18,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
@@ -51,7 +55,10 @@ public class NuevoEditarAutosController implements Initializable {
     JFXTextField txtExistencia;
     
     @ FXML
-    JFXCheckBox chActivo;
+    JFXCheckBox chActivo;   
+   
+    @FXML
+    ImageView imgViewImagen;
     
      private FormAutosController controller;
      private Autos auto;
@@ -95,11 +102,13 @@ public class NuevoEditarAutosController implements Initializable {
       
       });
       
-      txtPrecio.textProperty().bindBidirectional(auto.precioProperty(), new NumberStringConverter());
-      txtExistencia.textProperty().bindBidirectional(auto.existenciaProperty(), new NumberStringConverter());
+      txtPrecio.textProperty().bindBidirectional(auto.precioProperty(), 
+              new NumberStringConverter());
+      txtExistencia.textProperty().bindBidirectional(auto.existenciaProperty(),
+              new NumberStringConverter());
       chActivo.selectedProperty().bindBidirectional(auto.activoProperty());
 
-            
+        imgViewImagen.imageProperty().bind(auto.imageViewProperty());    
 
         
          
@@ -134,6 +143,27 @@ public class NuevoEditarAutosController implements Initializable {
     public void cancelar(){
         
         cerrar();
+    }
+    
+    public void agregarImagen() {
+        FileChooser fc = new FileChooser();
+        FileChooser.ExtensionFilter extensiones = 
+          new FileChooser.ExtensionFilter(
+            "Imagenes", "*.jpg", "*.png");
+        
+        fc.getExtensionFilters().add(extensiones);
+        
+        File archivo = fc.showOpenDialog(null);
+        
+        if (archivo != null) {
+            Image image = new Image(archivo.toURI().toString());
+            auto.setImageView(image);
+        }
+        
+    }
+    
+    public void removerImagen() {
+        auto.setImageView(null);
     }
     
     private void cerrar()

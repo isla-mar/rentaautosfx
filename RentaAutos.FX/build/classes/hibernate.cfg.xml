@@ -54,6 +54,8 @@ Contributor(s):
      <property name="hbm2ddl.auto">update</property>
     <mapping class="rentaautos.bl.Autos"/>
     <mapping class="rentaautos.bl.AutosCategoria"/>  
+    <mapping class="rentaautos.bl.FacturaDetalle"/>  
+    <mapping class="rentaautos.bl.Factura"/>  
      
   </session-factory>
 </hibernate-configuration>
