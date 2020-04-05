@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -159,6 +160,15 @@ public class Autos {
     {
         Image img=new Image(new ByteArrayInputStream(imagen));
         return img;
+    }
+    @Transient
+    public String getMarcasCategoria(){
+        return getAutosCategoria().getMarcas();
+    }
+    
+    @Transient 
+    public InputStream getFoto(){
+        return new ByteArrayInputStream(imagen);
     }
     
     public void setImageView(Image image) {  

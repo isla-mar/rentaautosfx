@@ -22,6 +22,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.sf.jasperreports.engine.JRException;
+import rentaautos.fx.ReporteAutosViewer;
 
 public class MainController implements Initializable, AbrirFormularioCallback {
 
@@ -125,8 +127,9 @@ public class MainController implements Initializable, AbrirFormularioCallback {
                     nombreFxml= "FormClientes.fxml";
                     break;
                     
-                case "Reportes":
-                    nombreFxml= "FormReportes.fxml";
+                case "Reporte Automoviles":
+                    ReporteAutosViewer reporteviewer = new ReporteAutosViewer();
+                    reporteviewer.mostrarReporte();
                     break;
                     
                 
@@ -134,6 +137,8 @@ public class MainController implements Initializable, AbrirFormularioCallback {
             form = FXMLLoader.load(getClass().getResource(("/rentaautos/fx/"+ nombreFxml))); //CAMBIE PRODUCTOS POR AUTO
             drawerStack.setContent(form);
         } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }
