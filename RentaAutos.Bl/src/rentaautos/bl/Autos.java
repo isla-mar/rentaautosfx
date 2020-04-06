@@ -127,7 +127,7 @@ public class Autos {
         return activo;
     }
     
-    @ManyToOne ///////////////////////////////////////
+    @ManyToOne 
     @JoinColumn(name="AutosCategoriaId", nullable=false)
     public AutosCategoria getAutosCategoria() {
         return (AutosCategoria) AutosCategoria.get();
@@ -141,7 +141,7 @@ public class Autos {
     public SimpleObjectProperty AutosCategoriaProperty(){
         return AutosCategoria;
     }
-    /////////////////////////////////////////////////
+    
     @Lob
     @Column(name = "imagen", columnDefinition = "LONGBLOB")
     public byte[] getImagen()
@@ -161,7 +161,7 @@ public class Autos {
         Image img=new Image(new ByteArrayInputStream(imagen));
         return img;
     }
-    ////////////////////////////////////////////////////////////////////
+   ////////////////////////////////////////////////////////////
     @Transient
     public String getmarcasCategoria(){
         return getAutosCategoria().getMarcas();
@@ -172,7 +172,7 @@ public class Autos {
         return new ByteArrayInputStream(imagen);
     }
     
-    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////
     public void setImageView(Image image) {  
         if (image == null) {
             setImagen("0".getBytes());

@@ -25,25 +25,18 @@ import net.sf.jasperreports.engine.JRException;
  */
 public class FormReporteFacturasController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
-    
     @FXML
     JFXDatePicker datePickerFechaInicial;
     
     @FXML
     JFXDatePicker datePickerFechaFinal;
     
-    
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        
         datePickerFechaInicial.setValue(LocalDate.now());
         datePickerFechaFinal.setValue(LocalDate.now());
-        
-        
+         
     }   
     
     public void generarReporte() throws ParseException{
