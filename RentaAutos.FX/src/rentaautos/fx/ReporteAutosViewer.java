@@ -26,26 +26,29 @@ public class ReporteAutosViewer extends JFrame{
     
     public void mostrarReporte() throws JRException{
         
-    
-    AutosServicio servicio =new AutosServicio();
-    
-    String file = "/rentaautos/fx/ReporteAutos.jasper";
-    InputStream stream = getClass().getResourceAsStream(file);
-    
-    JasperReport reporte = (JasperReport) JRLoader.loadObject(stream);
-    JRBeanCollectionDataSource beanColDataSource = 
-       new JRBeanCollectionDataSource(servicio.obtenerAutos(),false);
-    JasperPrint print = JasperFillManager.fillReport(reporte, null, beanColDataSource);
-    JRViewer viewer = new JRViewer(print);
-    viewer.setOpaque(true);
-    viewer.setVisible(true);
-    this.add(viewer);
-    this.setSize(1000,700);
-    
-    Dimension dim =Toolkit.getDefaultToolkit().getScreenSize();
-    this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-    
-    this.setVisible(true);
+    AutosServicio servicio = new AutosServicio();
+        String file = "/rentaautos/fx/ReporteAutos.jasper";
+        InputStream stream = getClass().getResourceAsStream(file);
+
+        JasperReport reporte = (JasperReport) JRLoader.loadObject(stream);
+        JRBeanCollectionDataSource beanColDataSource = 
+                new JRBeanCollectionDataSource(servicio.obtenerAutos(), false);
+
+        JasperPrint print = JasperFillManager
+                .fillReport(reporte, null, beanColDataSource);
+        JRViewer viewer = new JRViewer(print);
+        
+        viewer.setOpaque(true);
+        viewer.setVisible(true);
+
+        this.add(viewer);
+        this.setSize(1000, 700);
+
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize()
+                .width/2, dim.height/2-this.getSize().height/2);
+
+        this.setVisible(true);            
 
    
     }

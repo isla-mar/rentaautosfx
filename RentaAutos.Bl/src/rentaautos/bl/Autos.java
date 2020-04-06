@@ -161,8 +161,9 @@ public class Autos {
         Image img=new Image(new ByteArrayInputStream(imagen));
         return img;
     }
+    ////////////////////////////////////////////////////////////////////
     @Transient
-    public String getMarcasCategoria(){
+    public String getmarcasCategoria(){
         return getAutosCategoria().getMarcas();
     }
     
@@ -171,6 +172,7 @@ public class Autos {
         return new ByteArrayInputStream(imagen);
     }
     
+    //////////////////////////////////////////////////////////////////////
     public void setImageView(Image image) {  
         if (image == null) {
             setImagen("0".getBytes());

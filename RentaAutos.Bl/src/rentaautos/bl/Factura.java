@@ -5,6 +5,7 @@
  */
 package rentaautos.bl;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -32,9 +33,19 @@ public class Factura {
    private  Double impuesto;
    private Boolean activo;
 
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+   private Date fecha;
+
     public Factura() {
         activo = true;
         facturaDetalle = new HashSet<>();
+        fecha =new Date();
     }
       @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
